@@ -37,7 +37,7 @@ function CreateUser() {
       const response = await api.post("/users", { email, password });
 
       if (response && response.status === 201) {
-        showMessage("Usuário criado com sucesso!");
+        showMessage("Usuário criado com sucesso!", "success");
         history.push("/login");
       }
     } catch (error) {
