@@ -22,7 +22,7 @@ export default function useToastMessage() {
       icon = FaCheckCircle;
     } else if (type === "warning") {
       color = "text";
-      background = "yellow.500";
+      background = "brand.500";
       icon = FaExclamationTriangle;
     } else if (type === "error") {
       background = "red.500";

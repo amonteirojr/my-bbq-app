@@ -7,7 +7,7 @@ import BarbecueCard from "../components/BarbecueCard";
 import AddBarbecueButton from "../components/AddBarbecueButton";
 import useHandleErrors from "../hooks/HandleErrorsHook";
 import api from "../services/api";
-import { format, parse, parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
 import LoadingIndicator from "../components/LoadingIndicator";
 import { formatCurrencyBRL } from "../utils/convertion";
 
@@ -27,10 +27,10 @@ function Schedule() {
 
       if (response.status === 200) {
         const { data } = response;
-
         setBarbecues(data);
       }
     } catch (err) {
+      console.log(err);
       handleErrorStatus(err);
     } finally {
       setLoading(false);

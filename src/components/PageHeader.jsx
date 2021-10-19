@@ -1,9 +1,18 @@
-import React from "react";
-import { Flex, Heading } from "@chakra-ui/react";
+import React, { useContext } from "react";
+import { Flex, Heading, Button } from "@chakra-ui/react";
 
-import bbqPattern from "../images/bbq-pattern.svg";
+import bbqPattern from "../assets/images/bbq-pattern.svg";
+import { FaPowerOff } from "react-icons/fa";
+
+import { AuthContext } from "../contexts/AuthContext";
 
 function PageHeader({ title }) {
+  const { logout } = useContext(AuthContext);
+
+  function handleLogoutClick() {
+    logout();
+  }
+
   return (
     <>
       <Flex
@@ -17,6 +26,17 @@ function PageHeader({ title }) {
         <Heading textAlign="center" fontWeight="bold" fontSize="4xl">
           {title}
         </Heading>
+        <Button
+          leftIcon={<FaPowerOff />}
+          color="white"
+          position="absolute"
+          right={4}
+          top={4}
+          bg="black"
+          onClick={handleLogoutClick}
+        >
+          Sair
+        </Button>
       </Flex>
     </>
   );

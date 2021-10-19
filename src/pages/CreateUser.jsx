@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   Flex,
   Box,
@@ -9,36 +9,36 @@ import {
   Button,
   VStack,
   Text,
-  Divider,
 } from "@chakra-ui/react";
-import { AuthContext } from "../contexts/AuthContext";
+
 import { useHistory } from "react-router";
 
 import patternImage from "../assets/images/bbq-pattern.svg";
 import useHandleErrors from "../hooks/HandleErrorsHook";
-import { Link } from "react-router-dom";
+import api from "../services/api";
+import useToastMessage from "../hooks/ToastMessageHook";
 
-function Login() {
+function CreateUser() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { login } = useContext(AuthContext);
-
   const history = useHistory();
 
   const handleErrorsStatus = useHandleErrors();
+  const showMessage = useToastMessage();
 
-  async function handleLogin(e) {
+  async function handleSubmit(e) {
     try {
       e.preventDefault();
 
       setLoading(true);
 
-      const logged = await login(email, password);
+      const response = await api.post("/users", { email, password });
 
-      if (logged) {
-        history.push("/");
+      if (response && response.status === 201) {
+        showMessage("Usuário criado com sucesso!");
+        history.push("/login");
       }
     } catch (error) {
       handleErrorsStatus(error);
@@ -47,11 +47,15 @@ function Login() {
     }
   }
 
+  function handleCancel() {
+    history.goBack();
+  }
+
   return (
     <Flex alignItems="center" justifyContent="center" h="100vh" w="100vw">
       <Box
         bg="brand.500"
-        w={["80%", "60%", "40%"]}
+        w="30%"
         bgImage={patternImage}
         bgSize="contain"
         borderRadius="md"
@@ -60,10 +64,13 @@ function Login() {
         <Heading textAlign="center" fontSize="3xl">
           Agenda de churras
         </Heading>
-        <form onSubmit={handleLogin}>
+        <Text fontSize="lg" textAlign="center" mt={4} fontWeight="medium">
+          Digite seus dados abaixo para se cadastrar e utilizar o app
+        </Text>
+        <form onSubmit={handleSubmit}>
           <VStack spacing={2} mt={8}>
-            <FormControl id="login">
-              <FormLabel mb={1}>Login</FormLabel>
+            <FormControl id="login" isRequired>
+              <FormLabel mb={1}>E-mail de acesso</FormLabel>
               <Input
                 bg="white"
                 placeholder="e-mail"
@@ -71,7 +78,7 @@ function Login() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </FormControl>
-            <FormControl id="password">
+            <FormControl id="password" isRequired>
               <FormLabel mb={1}>Senha</FormLabel>
               <Input
                 type="password"
@@ -85,25 +92,29 @@ function Login() {
           <Button
             type="submit"
             isLoading={loading}
-            isDisabled={!login || !password}
             color="white"
             bg="black"
             w="100%"
             mt={4}
-            _hover={{ bg: "gray.700" }}
+            _hover={{ bg: "gray.800" }}
           >
-            Entrar
+            Cadastrar
           </Button>
         </form>
-        <Flex flexDir="column" mt={8} alignItems="center" gridGap={6}>
-          <Divider borderColor="black" />
-          <Link to="/users/new">
-            <Text fontWeight="bold">Cadastre-se</Text>
-          </Link>
-        </Flex>
+        <Button
+          variant="outline"
+          onClick={handleCancel}
+          color="black"
+          borderColor="black"
+          w="100%"
+          mt={4}
+          _hover={{ bg: "gray.800", color: "white" }}
+        >
+          Cancelar
+        </Button>
       </Box>
     </Flex>
   );
 }
 
-export default Login;
+export default CreateUser;

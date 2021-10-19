@@ -14,9 +14,8 @@ function parseCurrency(val) {
 }
 
 function formatCurrency(val) {
-  val = val.replace(/\D/g, "");
-  val = parseInt(val) / 100;
-  return val;
+  val = val.replace(",", ".");
+  return parseFloat(val);
 }
 
 export { formatCurrencyBRL, parseCurrency, formatCurrency };

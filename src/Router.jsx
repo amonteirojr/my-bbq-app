@@ -5,6 +5,7 @@ import Schedule from "./pages/Schedule";
 import Login from "./pages/Login";
 import { AuthContext } from "./contexts/AuthContext";
 import AddBarbecue from "./pages/AddBarbecue";
+import CreateUser from "./pages/CreateUser";
 
 function PrivateRoute({ component: Component, ...rest }) {
   const { authenticated } = useContext(AuthContext);
@@ -44,6 +45,7 @@ function Router() {
           component={AddBarbecue}
         />
         <Route path="/login" component={Login} />
+        <Route path="/users/new" exact component={CreateUser} />
         <Redirect exact path="/" to="/barbecues" />
       </Switch>
     </BrowserRouter>

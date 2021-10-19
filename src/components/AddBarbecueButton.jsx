@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Image, WrapItem, Text } from "@chakra-ui/react";
 
-import iconBbq from "../images/icon-bbq.svg";
+import iconBbq from "../assets/images/icon-bbq.svg";
 
 function AddBarbecueButton({ onClick }) {
   return (

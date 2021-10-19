@@ -14,7 +14,7 @@ import {
 import { parseCurrency } from "../utils/convertion";
 import { FaTrashAlt } from "react-icons/fa";
 
-function AddParticipants({ addParticipants }) {
+function AddParticipants({ addParticipants, addedParticipants }) {
   const [participants, setParticipants] = useState([]);
 
   function addNewParticipant() {
@@ -46,20 +46,30 @@ function AddParticipants({ addParticipants }) {
     if (participants) {
       addParticipants(participants);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [participants]);
+
+  useEffect(() => {
+    if (addedParticipants && addedParticipants.length > participants.length) {
+      setParticipants([...addedParticipants]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addedParticipants]);
 
   return (
     <Flex mt={6} flexDir="column" w="100%">
-      <Heading fontSize="2xl">Participantes</Heading>
+      <Flex alignItems="center" justifyContent="space-between">
+        <Heading fontSize="2xl">Participantes</Heading>
 
-      <Button
-        bg="none"
-        color="blue.500"
-        w={["100%", "100%", "20%"]}
-        onClick={addNewParticipant}
-      >
-        + Novo participante
-      </Button>
+        <Button
+          bg="none"
+          color="blue.500"
+          w={["100%", "100%", "20%"]}
+          onClick={addNewParticipant}
+        >
+          + Novo participante
+        </Button>
+      </Flex>
 
       {participants.map((participant, index) => (
         <Wrap mt={4} align="flex-end" w="100%" key={index}>
@@ -95,8 +105,8 @@ function AddParticipants({ addParticipants }) {
                 onChange={(e) =>
                   setParticipantValues(index, "paid", e.target.checked)
                 }
+                isChecked={participant.paid}
                 colorScheme="yellow"
-                value={participant.paid}
               >
                 Pago?
               </Checkbox>
